@@ -1,0 +1,7 @@
+{
+  "name": "nang-factory",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve ."
+  }
+}
