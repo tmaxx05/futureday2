@@ -122,6 +122,25 @@ calc();
 var mb=document.getElementById('menu'),nv=document.getElementById('nav');
 mb.addEventListener('click',function(){var o=nv.classList.toggle('open');mb.setAttribute('aria-expanded',o?'true':'false')});
 nv.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nv.classList.remove('open');mb.setAttribute('aria-expanded','false')})});
-document.getElementById('send').addEventListener('click',function(){
-  document.getElementById('thanks').style.display='block';
+var SHEET_URL = 'https://script.google.com/macros/s/AKfycbybBorbSUuElxuCEJarZPruuEmxux2LUDKA4_PvGkoifTpE1WnjvlbJOsBNMLfSbU_P/exec';
+document.getElementById('send').addEventListener('click', function () {
+  var btn = this;
+  var data = {
+    name: document.getElementById('n').value.trim(),
+    phone: document.getElementById('p').value.trim(),
+    roof: document.getElementById('t').value,
+    note: document.getElementById('m').value.trim()
+  };
+  if (!data.name || !data.phone) {
+    alert('Vui lòng nhập họ tên và số điện thoại.');
+    return;
+  }
+  btn.disabled = true;
+  fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) })
+    .then(function () {
+      document.getElementById('thanks').style.display = 'block';
+      ['n', 'p', 'm'].forEach(function (id) { document.getElementById(id).value = ''; });
+    })
+    .catch(function () { alert('Chưa gửi được, bạn thử lại hoặc gọi hotline giúp Nắng nhé.'); })
+    .finally(function () { btn.disabled = false; });
 });
